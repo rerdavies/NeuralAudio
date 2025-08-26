@@ -81,6 +81,26 @@ namespace NeuralAudio
 			return -18 - modelLoudnessDB;
 		}
 
+        virtual bool HasModelInputLevelDBu() const {
+            return hasModelInputLevelDBu;
+        }
+        virtual float GetModelInputLevelDBu() const {
+            return modelInputLevelDBu;
+        }
+        virtual bool HasModelOutputLevelDBu() const {
+            return hasModelOutputLevelDBu;
+        }
+        virtual float GetModelOutputLevelDBu() const {
+            return modelOutputLevelDBu;
+        }
+        virtual bool HasModelLoudnessDB() const {
+            return hasModelLoudnessDB;
+        }
+        virtual bool GetModelLoudnessDB() const {
+            return modelLoudnessDB;
+        }
+
+
 		virtual float GetSampleRate()
 		{
 			return sampleRate;
@@ -101,9 +121,18 @@ namespace NeuralAudio
 		void ReadNAMConfig(const nlohmann::json& modelJson);
 		void ReadKerasConfig(const nlohmann::json& modelJson);
 
+        bool hasModelInputLevelDBu = false;
 		float modelInputLevelDBu = 12;
+        bool hasModelOutputLevelDBu = false;
 		float modelOutputLevelDBu = 12;
+
+
+        bool hasModelGainDb = false;
+        float modelGainDb = 0.9;
+
+        bool hasModelLoudnessDB = false;
 		float modelLoudnessDB = -18;
+        
 		float sampleRate = 48000;
 
 		inline static float audioInputLevelDBu = 12;

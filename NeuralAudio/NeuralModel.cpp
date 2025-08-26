@@ -327,18 +327,27 @@ namespace NeuralAudio
 
 			if (metaData.contains("loudness") && metaData.at("loudness").is_number_float())
 			{
+                hasModelLoudnessDB = true;
 				modelLoudnessDB = (float)metaData.at("loudness");
 			}
 
 			if (metaData.contains("input_level_dbu") && metaData.at("input_level_dbu").is_number_float())
 			{
+                hasModelInputLevelDBu = true;
 				modelInputLevelDBu = metaData.at("input_level_dbu");
 			}
 
 			if (metaData.contains("output_level_dbu") && metaData.at("output_level_dbu").is_number_float())
 			{
+                hasModelOutputLevelDBu = true;
 				modelOutputLevelDBu = metaData.at("output_level_dbu");
 			}
+			if (metaData.contains("gain") && metaData.at("gain").is_number_float())
+			{
+                hasModelGainDb = true;
+				modelGainDb = metaData.at("gain");
+			}
+
 		}
 	}
 
@@ -351,11 +360,13 @@ namespace NeuralAudio
 
 		if (modelJson.contains("in_gain") && modelJson.at("in_gain").is_number_float())
 		{
+            hasModelInputLevelDBu;
 			modelInputLevelDBu = modelJson.at("in_gain");
 		}
 
 		if (modelJson.contains("out_gain") && modelJson.at("out_gain").is_number_float())
 		{
+            hasModelLoudnessDB = true;
 			modelLoudnessDB = -18 - (float)modelJson.at("out_gain");
 		}
 	}
