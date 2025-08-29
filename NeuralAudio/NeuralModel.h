@@ -96,8 +96,14 @@ namespace NeuralAudio
         virtual bool HasModelLoudnessDB() const {
             return hasModelLoudnessDB;
         }
-        virtual bool GetModelLoudnessDB() const {
+        virtual double GetModelLoudnessDB() const {
             return modelLoudnessDB;
+        }
+        virtual bool HasModelGainDB() const {
+            return hasModelGainDB;
+        }
+        virtual double GetModelGainDB() const {
+            return modelGainDB;
         }
 
 
@@ -127,12 +133,12 @@ namespace NeuralAudio
 		float modelOutputLevelDBu = 12;
 
 
-        bool hasModelGainDb = false;
-        float modelGainDb = 0.9;
+        bool hasModelGainDB = false;
+        float modelGainDB = 0.9;
 
         bool hasModelLoudnessDB = false;
 		float modelLoudnessDB = -18;
-        
+
 		float sampleRate = 48000;
 
 		inline static float audioInputLevelDBu = 12;

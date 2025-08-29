@@ -344,8 +344,8 @@ namespace NeuralAudio
 			}
 			if (metaData.contains("gain") && metaData.at("gain").is_number_float())
 			{
-                hasModelGainDb = true;
-				modelGainDb = metaData.at("gain");
+                hasModelGainDB = true;
+				modelGainDB = metaData.at("gain");
 			}
 
 		}
