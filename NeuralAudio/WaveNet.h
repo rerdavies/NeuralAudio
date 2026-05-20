@@ -46,7 +46,32 @@ namespace NeuralAudio
 					bias(i) = *(inWeights++);
 			}
 		}
+        #if 0
+        // Trial roollback of 
+        // https://github.com/mikeoliphant/NeuralAudio/commit/f0f3b8accf1e832d710309a6fe9d156d699541a2
+        // to see if this accounts for the AARCH64 performance regression
 
+        template<typename Derived, typename Derived2>
+		inline void Process(const Eigen::MatrixBase<Derived>& input, Eigen::MatrixBase<Derived2> const & output, const size_t iStart, const size_t nCols) const
+		{
+            *(int*)0 = 0;
+            ForEachIndex<KernelSize>([&](auto k)
+			{
+				auto offset = Dilation * ((int)k + 1 - KernelSize);
+
+				auto inBlock = input.middleCols(iStart + offset, nCols);
+
+				if (k == 0)
+					const_cast<Eigen::MatrixBase<Derived2>&>(output).noalias() = weights[k] * inBlock;
+				else
+					const_cast<Eigen::MatrixBase<Derived2>&>(output).noalias() += weights[k] * inBlock;
+			});
+
+			if constexpr (DoBias)
+				const_cast<Eigen::MatrixBase<Derived2>&>(output).colwise() += bias;
+		}
+
+        #else
 		template<typename Derived, typename Derived2>
 		inline void Process(const Eigen::MatrixBase<Derived>& input, Eigen::MatrixBase<Derived2> const & output, const size_t iStart, const size_t nCols) const
 		{
@@ -75,6 +100,7 @@ namespace NeuralAudio
 			if constexpr (DoBias)
 				const_cast<Eigen::MatrixBase<Derived2>&>(output).colwise() += bias;
 		}
+        #endif
 
 	private:
 		std::vector<Eigen::Matrix<float, OutChannels, InChannels>> weights;
