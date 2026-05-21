@@ -40,18 +40,23 @@ namespace NeuralAudio
 
 			namModel = nam::get_dsp(modelJson);
 
-			suppressPrewarm = true;	// Hack to work around NAM Core get_dsp() above forcing prewarm
-
 			auto* slim = dynamic_cast<nam::SlimmableModel*>(namModel.get());
 
-			if (slim != nullptr)
+			if (slim != nullptr )
 			{
 				isSlimmable = true;
 
-				slim->SetSlimmableSize(slimmableSize);
-			}
+                suppressPrewarm = true;	// Hack to work around NAM Core get_dsp() above forcing prewarm
+                if (slimmableSize != -1.0f)
+                {
+				    slim->SetSlimmableSize(slimmableSize);
 
-			SetMaxAudioBufferSize(defaultMaxAudioBufferSize);
+                } 
+			}
+            
+            SetMaxAudioBufferSize(defaultMaxAudioBufferSize);
+
+
 
 			return true;
 		}
@@ -79,6 +84,7 @@ namespace NeuralAudio
 						auto* slim = dynamic_cast<nam::SlimmableModel*>(namModel.get());
 
 						slim->SetSlimmableSize(slimmableSize);
+
 					}
 				}
 			}
