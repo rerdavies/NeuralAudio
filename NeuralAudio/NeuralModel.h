@@ -87,6 +87,10 @@ namespace NeuralAudio
 			(void)scaleFactor;
 		}
 
+        virtual const std::vector<float> GetSlimmableWeights() const {
+            return emptySlimmableWeights;
+        }
+
 		virtual bool IsStatic()
 		{
 			return false;
@@ -149,6 +153,7 @@ namespace NeuralAudio
 		}
 
 	protected:
+        std::vector<float> emptySlimmableWeights;
 		float modelInputLevelDBu = 12;
 		float modelOutputLevelDBu = 12;
 		float modelLoudnessDB = -18;

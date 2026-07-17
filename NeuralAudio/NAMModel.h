@@ -52,6 +52,22 @@ namespace NeuralAudio
 				    slim->SetSlimmableSize(slimmableSize);
 
                 } 
+                // Parse the modelJson to find model weights.
+                this->slimmableWeights.clear();
+                if (modelJson.contains("config"))
+                {
+                    const auto& config = modelJson["config"];
+                    if (config.contains("submodels") && config["submodels"].is_array())
+                    {
+                        for (const auto& submodel : config["submodels"])
+                        {
+                            if (submodel.contains("max_value"))
+                            {
+                                this->slimmableWeights.push_back(submodel["max_value"].get<float>());
+                            }
+                        }
+                    }
+                }
 			}
             
             SetMaxAudioBufferSize(defaultMaxAudioBufferSize);
@@ -89,6 +105,9 @@ namespace NeuralAudio
 				}
 			}
 		}
+        virtual const std::vector<float> GetSlimmableWeights() const {
+            return slimmableWeights;
+        }
 
 		void SetMaxAudioBufferSize(const int maxSize) override
 		{
@@ -113,6 +132,7 @@ namespace NeuralAudio
 		}
 
 	private:
+        std::vector<float> slimmableWeights;
 		std::unique_ptr<nam::DSP> namModel = nullptr;
 		float slimmableSize = 1.0f;
 		bool isSlimmable = false;

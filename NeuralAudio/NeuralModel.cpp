@@ -320,6 +320,7 @@ namespace NeuralAudio
 			}
 		}
 
+        
 		if (newModel != nullptr)
 		{
 			newModel->Prewarm();
